@@ -46,13 +46,13 @@
   width: 100%;
  }
  .banner-title{
-  color: white;
+  color: rgb(198, 33, 33);
   position: absolute;
   top:55vh;
   left: 5vw;
  }
  .banner-text{
-  color: white;
+  color: rgb(31, 36, 52);
   position: absolute;
   top:60vh;
   left: 4vw;
@@ -90,4 +90,9 @@
   .button-wrapper , .trending{
     display: flex;
     justify-content: center;
+  }
+
+  .pagination{
+    display: flex;
+     justify-content: center;
   }

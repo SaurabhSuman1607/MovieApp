@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {movies} from './getMovies'
+import axios from 'axios';
 export default class 
 extends Component {
    constructor(){
@@ -7,6 +7,7 @@ extends Component {
     super();
     this.state={
       hover:"",
+      movies:[]
     };
    }
 
@@ -25,27 +26,33 @@ extends Component {
    }  
 
  async componentDidMount(){
-  console.log("CDM used");
-  let res=await fetch("https://api.themoviedb.org/3/movie/popular?api_key=6c10a4f6614e34d94d7b489786dfcd43&language=en-US&page=1");
-  let data=await res.json();
-  console.log(data);
+  // console.log("CDM used");
+  // let res=await fetch("https://api.themoviedb.org/3/movie/popular?api_key=6c10a4f6614e34d94d7b489786dfcd43&language=en-US&page=1");
+  // let data=await res.json();
+
+  let data=await axios.get(
+    "https://api.themoviedb.org/3/movie/popular?api_key=6c10a4f6614e34d94d7b489786dfcd43&language=en-US&page=1"
+  );
+  console.log(data.data);
+  this.setState({
+    movies:[...data.data.results]
+  })
+  
  }
+
  componentDidUpdate(){
  console.log("CDU used");
 
  }
  componentWillUnmount(){
  console.log("CWU usedReact");
-
  }
 
-
-
   render() {
-    let AllMovies=movies.results;
+    // let AllMovies=movies.results;
     return (
       <>
-      {AllMovies.length==0?
+      {this.state.movies.length==0?
       (
 <div class="spinner-border text-info" role="status">
   <span class="visually-hidden">Loading...</span>
@@ -56,8 +63,8 @@ extends Component {
             Trending
         </h3>
       <div className='movies-list'>
-        {
-             AllMovies.map((movieobj) => {
+         {
+            this.state.movies.map((movieobj) => {
                 return( 
                     <div className="card movie-card"
                     onMouseEnter={()=>this.handleEnter(movieobj.id)}
@@ -82,19 +89,25 @@ extends Component {
              })
         }
       
-   </div>
+   
   </div>
   
-  //   <nav aria-label="Page navigation example">
-  //   <ul class="pagination">
-  //     <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-  //     <li class="page-item"><a class="page-link" href="#">1</a></li>
-  //     <li class="page-item"><a class="page-link" href="#">2</a></li>
-  //     <li class="page-item"><a class="page-link" href="#">3</a></li>
-  //     <li class="page-item"><a class="page-link" href="#">Next</a></li>
-  //   </ul>
-  // </nav>
-  
+  <nav aria-label="...">
+  <ul class="pagination">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item active">
+      <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+  </div>
   )}
 
   </> 
