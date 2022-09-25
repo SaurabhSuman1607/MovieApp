@@ -7,7 +7,8 @@ extends Component {
     super();
     this.state={
       hover:"",
-      movies:[]
+      movies:[],
+       currpage:1,
     };
    }
 
@@ -26,17 +27,40 @@ extends Component {
    }  
 
  async componentDidMount(){
-  // console.log("CDM used");
+  console.log("CDM used");
   // let res=await fetch("https://api.themoviedb.org/3/movie/popular?api_key=6c10a4f6614e34d94d7b489786dfcd43&language=en-US&page=1");
   // let data=await res.json();
 
   let data=await axios.get(
-    "https://api.themoviedb.org/3/movie/popular?api_key=6c10a4f6614e34d94d7b489786dfcd43&language=en-US&page=1"
+    `https://api.themoviedb.org/3/movie/popular?api_key=6c10a4f6614e34d94d7b489786dfcd43&language=en-US&page=1`
   );
   console.log(data.data);
   this.setState({
     movies:[...data.data.results]
   })
+  
+ }
+
+  async getUpdate(){
+    console.log("getUpdatedMovies is called");
+    let data=await axios.get(
+      `https://api.themoviedb.org/3/movie/popular?api_key=6c10a4f6614e34d94d7b489786dfcd43&language=en-US&page=${this.state.currpage}`
+    );
+    console.log(data.data);
+    this.setState({
+      movies:[...data.data.results]
+    })
+ 
+ }
+
+ handleNextPage=()=>{
+  
+   this.setState({currpage: this.state.currpage+1 }, this.getUpdate)
+ }
+ 
+ handlePreviousPage=()=>{
+    if(this.state.currpage>1)
+   this.setState({currpage: this.state.currpage-1} , this.getUpdate)
   
  }
 
@@ -92,21 +116,19 @@ extends Component {
    
   </div>
   
-  <nav aria-label="...">
-  <ul class="pagination">
-    <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1">Previous</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active">
-      <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Next</a>
-    </li>
-  </ul>
-</nav>
+  <nav aria-label="Page navigation example" className="pagination">
+              <ul className="pagination">
+                <li className="page-item" onClick={this.handlePreviousPage}>
+                  <a className="page-link">Previous</a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link">{this.state.currpage}</a>
+                </li>
+                <li className="page-item" onClick={this.handleNextPage}>
+                  <a className="page-link">Next</a>
+                </li>
+              </ul>
+            </nav>
   </div>
   )}
 
