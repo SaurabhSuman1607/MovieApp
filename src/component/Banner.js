@@ -43,7 +43,6 @@ export default class Banner extends Component {
       <div className="card-body">
         <h5 className="card-title banner-title">{ this.state.movies[0].original_title}</h5>
         <p className="card-text banner-text">{ this.state.movies[0].overview}</p>
-       
       </div>
     </div>
    

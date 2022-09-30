@@ -3,14 +3,27 @@ import './App.css';
 import Navbar from './component/Navbar';
 import Banner from './component/Banner';
 import List from './component/List';
-
+import Favourites from './component/favourites';
+import {BrowserRouter, Routes , Route} from 'react-router-dom'
 function App() {
   return (
       <>      
-       <Navbar/>
+       {/* <Navbar/>
        <Banner/>
-       <List/>
-   
+       <List/> */}
+      {/* <Favourites/> */}
+      <BrowserRouter>
+      <Navbar/>
+      <Routes>
+
+        <Route path="/" element={
+        <>
+        <Banner/>
+        <List />
+        </>}/>
+        <Route path="/Fav" element={<Favourites />}/>
+        </Routes>
+      </BrowserRouter>
       </>
   );
 }
