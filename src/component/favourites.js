@@ -16,11 +16,14 @@ export default class favourites extends Component {
   async componentDidMount(){
     console.log("CDM used");
     // let res=await fetch("https://api.themoviedb.org/3/movie/popular?api_key=6c10a4f6614e34d94d7b489786dfcd43&language=en-US&page=1");
-    // let data=await res.json();
-  
+    //  console.log(res);
+    // let data=await res.JSON();
+    
+    // data=JSON.parse(data);
+    // console.log(data);
     // let data = JSON.parse(localStorage.getItem("movies"));
-    let data=await axios.get(
-      `https://api.themoviedb.org/3/movie/popular?api_key=6c10a4f6614e34d94d7b489786dfcd43&language=en-US&page=1`
+    let data= await axios.get(
+      `https://api.themoviedb.org/3/movie/popular?api_key=6c10a4f6614e34d94d7b489786dfcd43&language=en-US&page=2`
     );
     console.log(data.data);
     
@@ -56,8 +59,8 @@ export default class favourites extends Component {
     console.log(allGenre);
 
     this.setState({
-      movies: [...data],
-      // genre: [...allGenre],
+      movies: [...data.data.results],
+      genre: [...allGenre],
     });
    }
  
@@ -105,7 +108,7 @@ export default class favourites extends Component {
       <div className="row">
       <div className="col-3 p-5 ">
         <ul class="list-group">
-     {/* {this.state.genre.map((genre)=>{
+     {this.state.genre.map((genre)=>{
       return ( this.state.currGenre==genre ? 
         <li class="list-group-item active">{genre}</li>
       :
@@ -113,13 +116,13 @@ export default class favourites extends Component {
                   {genre}
                 </li>
       );
-     })} */}
+     })}
 
   {/* <li class="list-group-item active" aria-current="true">An active item</li> */}
-  <li class="list-group-item active">All Geners</li>
+  {/* <li class="list-group-item active">All Geners</li>
   <li class="list-group-item">Fantasy</li>
   <li class="list-group-item">Action</li>
-  <li class="list-group-item">Animation</li>
+  <li class="list-group-item">Animation</li> */}
         </ul>
         </div>
        <div className="col p-5 favourite-table">
@@ -139,9 +142,9 @@ export default class favourites extends Component {
           </tr>
         </thead>
         <tbody>
-                 {filteredMovies.map((MovieObj)=>(
+                 { filteredMovies.map((MovieObj)=>(
                   <tr>
-                   
+ 
                   <td> <img src={`https://image.tmdb.org/t/p/original/${MovieObj.backdrop_path}`} style={{width:'8rem'}}></img>
                   {MovieObj.original_title}</td>
                   <td>{genreId[MovieObj.genre_ids[0]]}</td>
@@ -160,8 +163,9 @@ export default class favourites extends Component {
       </table>
       </div>
       </div>
-      
-      
+   
     )
   }
 }
+
+
