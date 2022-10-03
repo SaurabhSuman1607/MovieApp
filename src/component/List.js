@@ -9,7 +9,9 @@ extends Component {
       hover:"",
       movies:[],
        currpage:1,
+       fav:[],
     };
+    this.favouriteMovies=[];
    }
 
   
@@ -71,9 +73,27 @@ extends Component {
  componentWillUnmount(){
  console.log("CWU usedReact");
  }
+  
+  handleFavourites=(movieObj)=>{
+    if(this.state.fav.includes(movieObj.id)){
+      // remove
+      this.favouriteMovies=this.favouriteMovies.filter(movie=>movie.id!=movieObj.id)
+    }
+    else{
+      //add
+      this.favouriteMovies.push(movieObj);
+    }
+    let tempData=this.favouriteMovies.map(movieObj=>movieObj.id);
+    this.setState({
+      fav:[...tempData]
+    })
+  }
+
 
   render() {
     // let AllMovies=movies.results;
+    
+    console.log("qwerty", this.favouriteMovies);
     return (
       <>
       {this.state.movies.length==0?
@@ -96,11 +116,13 @@ extends Component {
                      >
                     <img src={`https://image.tmdb.org/t/p/original/${movieobj.backdrop_path}`} class="card-img-top movie-img" alt="..." />
                     
-                      <h5 class="card-title movie-title">{movieobj.original_title}</h5>
+                      <h5 class="card-title movie-title">
+                        {movieobj.original_title}
+                        </h5>
                       {/* <p class="card-text movie-text">{movie.overview}</p> */}
                       <div className='button-wrapper'>
                      { this.state.hover == movieobj.id && (
-                     < a href="#" className="btn btn-primary movie-button">
+                     < a href="#" className="btn btn-primary movie-button" onClick={this.handleFavourites(movieobj)}>
                      Add to Favourites
                      </a>
                       )}
